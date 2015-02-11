@@ -1,19 +1,16 @@
-// Scripted By Adam Khoury in connection with the following video tutorial:
-// http://www.youtube.com/watch?v=c_ohDPWmsM0
-
-var memory_array = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H', 'I', 'I', 'J', 'J', 'K', 'K', 'L', 'L'];
+var cards = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H', 'I', 'I', 'J', 'J', 'K', 'K', 'L', 'L'];
+var cards_flipped = 0;
 var memory_values = [];
-var memory_tile_ids = [];
-var tiles_flipped = 0;
+var memory_card_ids = [];
 
-Array.prototype.memory_tile_shuffle = function() {
+Array.prototype.shuffle = function() {
   var i = this.length,
-    j, temp;
+    pos, temp;
   
   while (--i > 0) {
-    j = Math.floor(Math.random() * (i + 1));
-    temp = this[j];
-    this[j] = this[i];
+    pos = Math.floor(Math.random() * (i + 1));
+    temp = this[pos];
+    this[pos] = this[i];
     this[i] = temp;
   }
 }
@@ -21,42 +18,42 @@ Array.prototype.memory_tile_shuffle = function() {
 function newBoard() {
   var output = '';
   
-  tiles_flipped = 0;
+  cards_flipped = 0;
   
-  memory_array.memory_tile_shuffle();
+  cards.shuffle();
   
-  for (var i = 0; i < memory_array.length; i++) {
-    output += '<div id="tile_' + i + '" onclick="memoryFlipTile(this,\'' + memory_array[i] + '\')"></div>';
+  for (var i = 0; i < cards.length; i++) {
+    output += '<div id="card_' + i + '" onclick="flipCard(this,\'' + cards[i] + '\')"></div>';
   }
   
   document.getElementById('memory_board').innerHTML = output;
 }
 
-function memoryFlipTile(tile, val) {
-	if (tile.innerHTML == "" && memory_values.length < 2) {
+function flipCard(card, val) {
+	if (card.innerHTML == "" && memory_values.length < 2) {
 
-    tile.style.background = '#FFF';
-    tile.innerHTML = val;
+    card.style.background = '#FFF';
+    card.innerHTML = val;
     
     if (memory_values.length == 0) {
 
       memory_values.push(val);
-      memory_tile_ids.push(tile.id);
+      memory_card_ids.push(card.id);
 
     } else if (memory_values.length == 1) {
       
       memory_values.push(val);
-      memory_tile_ids.push(tile.id);
+      memory_card_ids.push(card.id);
       
       if (memory_values[0] == memory_values[1]) {
-        tiles_flipped += 2;
+        cards_flipped += 2;
         
         // Clear both arrays
         memory_values = [];
-        memory_tile_ids = [];
+        memory_card_ids = [];
         
         // Check to see if the whole board is cleared
-        if (tiles_flipped == memory_array.length) {
+        if (cards_flipped == cards.length) {
           alert("Board cleared... generating new board");
           document.getElementById('memory_board').innerHTML = "";
           newBoard();
@@ -64,21 +61,21 @@ function memoryFlipTile(tile, val) {
 
       } else {
 
-        function flip2Back() {
-          // Flip the 2 tiles back over
-          var tile_1 = document.getElementById(memory_tile_ids[0]);
-          var tile_2 = document.getElementById(memory_tile_ids[1]);
-          tile_1.style.background = 'url(tile_bg.jpg) no-repeat';
-          tile_1.innerHTML = "";
-          tile_2.style.background = 'url(tile_bg.jpg) no-repeat';
-          tile_2.innerHTML = "";
+        function flipBack() {
+          // Flip the 2 cards back over
+          var card_1 = document.getElementById(memory_card_ids[0]);
+          var card_2 = document.getElementById(memory_card_ids[1]);
+          card_1.style.background = 'url(tile_bg.jpg) no-repeat';
+          card_1.innerHTML = "";
+          card_2.style.background = 'url(tile_bg.jpg) no-repeat';
+          card_2.innerHTML = "";
           
           // Clear both arrays
           memory_values = [];
-          memory_tile_ids = [];
+          memory_card_ids = [];
         }
 
-        setTimeout(flip2Back, 700);
+        setTimeout(flipBack, 700);
       }
     }
 	}
