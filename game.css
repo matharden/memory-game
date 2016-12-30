@@ -1,21 +1,25 @@
-div#memory_board {
-  background: #ccc;
-  border: #999 1px solid;
-  width: 800px;
-  height: 540px;
-  padding: 24px;
-  margin: 0px auto;
+body {
+  margin: 0;
 }
 
 div#memory_board > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: url(tile_bg.jpg) no-repeat;
   border: #000 1px solid;
-  width: 71px;
-  height: 71px;
+  width: calc(100vw / 4 - 2px);
+  height: calc(100vw / 4 - 2px);
   float: left;
-  margin: 10px;
-  padding: 20px;
-  font-size: 64px;
+  font-family: wingdings;
+  font-size: 12vw;
   cursor: pointer;
   text-align: center;
+}
+
+@media (min-width: 426px) {
+  div#memory_board > div {
+    width: calc(100vw / 6 - 2px);
+    height: calc(100vw / 6 - 2px);
+  }
 }
